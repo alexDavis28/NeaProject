@@ -1,0 +1,9 @@
+body
+{
+    background-color: lightgrey;
+}
+#navbar
+{
+    overflow: hidden;
+    float: center;
+}

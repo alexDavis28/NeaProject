@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div id="navbar">
+    <a class="navbar-link" href="{{url_for('index')}}">Home</a>
+    <a class="navbar-link" href="{{url_for('info')}}">Info</a>
+    <a class="navbar-link" href="{{url_for('profile')}}">Profile</a>
+    <a class="navbar-link" href="{{url_for('api')}}">API</a>
+</div>
+<br>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
