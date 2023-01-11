@@ -19,12 +19,44 @@
             <br>
             {{form.max_time()}}
         </div>
-        <div>
-            {{form.meal_type.label}}
-            <br>
-            {{form.meal_type()}}
+        <div id="excluded-ingredients">
+            <div ><p>Ingredients to exclude</p></div>
+            <div id="excluded-ingredients-fields">
+                <div id="exclude-celery" class="form-field checkbox-field">
+                    {{form.exclude_celery.label}}
+                    {{form.exclude_celery()}}
+                </div>
+                <div id="exclude-dairy" class="form-field checkbox-field">
+                    {{form.exclude_dairy.label}}
+                    {{form.exclude_dairy()}}
+                </div>
+                <div id="exclude-eggs" class="form-field checkbox-field">
+                    {{form.exclude_eggs.label}}
+                    {{form.exclude_eggs()}}
+                </div>
+                <div id="exclude-gluten" class="form-field checkbox-field">
+                    {{form.exclude_gluten.label}}
+                    {{form.exclude_gluten()}}
+                </div>
+                <div id="exclude-mustard" class="form-field checkbox-field">
+                    {{form.exclude_mustard.label}}
+                    {{form.exclude_mustard()}}
+                </div>
+                <div id="exclude-nuts" class="form-field checkbox-field">
+                    {{form.exclude_nuts.label}}
+                    {{form.exclude_nuts()}}
+                </div>
+                <div id="exclude-sesame" class="form-field checkbox-field">
+                    {{form.exclude_sesame.label}}
+                    {{form.exclude_sesame()}}
+                </div>
+                <div id="exclude-soya" class="form-field checkbox-field">
+                    {{form.exclude_soya.label}}
+                    {{form.exclude_soya()}}
+                </div>
+            </div>
         </div>
-        <div id="form-submit-button" class="form-button">
+        <div id="form-submit-button" class=" form-field form-button">
             {{form.submit()}}
         </div>
     </form>
