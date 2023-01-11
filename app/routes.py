@@ -1,11 +1,13 @@
 from app import app
+from app.forms import RecommenderForm
 from flask import render_template, url_for
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def index():
+    form = RecommenderForm()
     # Route for home page
-    return render_template("index.html")
+    return render_template("index.html", form=form)
 
 
 @app.route('/info')

@@ -1,5 +1,32 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content%}
-<p>Hello world!</p>
+<div id="page-title" class="title text"><h2>Recommend me recipes</h2></div>
+<div id="recipe-form" class="form">
+    <form method="POST">
+        <div>
+            {{form.ingredients.label}}
+            <br>
+            {{form.ingredients()}}
+        </div>
+        <div>
+            {{form.diet.label}}
+            <br>
+            {{form.diet()}}
+        </div>
+        <div id="max-time-field" class="form-field number-field">
+            {{form.max_time.label}}
+            <br>
+            {{form.max_time()}}
+        </div>
+        <div>
+            {{form.meal_type.label}}
+            <br>
+            {{form.meal_type()}}
+        </div>
+        <div id="form-submit-button" class="form-button">
+            {{form.submit()}}
+        </div>
+    </form>
+</div>
 {% endblock%}
