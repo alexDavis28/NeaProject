@@ -11,14 +11,14 @@ def index():
             "Ingredient": form.ingredients.data,
             "Diet": form.diet.data,
             "MaxTime": form.max_time.data,
-            "excludeCelery": form.exclude_celery.data,
-            "excludeDairy": form.exclude_dairy.data,
-            "excludeEggs": form.exclude_eggs.data,
-            "excludeGluten": form.exclude_gluten.data,
-            "excludeMustard": form.exclude_mustard.data,
-            "excludeNuts": form.exclude_nuts.data,
-            "excludeSesame": form.exclude_sesame.data,
-            "excludeSoya": form.exclude_soya.data
+            "ExcludeCelery": form.exclude_celery.data,
+            "ExcludeDairy": form.exclude_dairy.data,
+            "ExcludeEggs": form.exclude_eggs.data,
+            "ExcludeGluten": form.exclude_gluten.data,
+            "ExcludeMustard": form.exclude_mustard.data,
+            "ExcludeNuts": form.exclude_nuts.data,
+            "ExcludeSesame": form.exclude_sesame.data,
+            "ExcludeSoya": form.exclude_soya.data
         }
         session["recommenderFormData"] = data
         return redirect(url_for("recommend"))
