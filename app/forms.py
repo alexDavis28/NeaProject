@@ -1,10 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, SubmitField, BooleanField
+from wtforms import StringField, SelectField, IntegerField, SubmitField, BooleanField, FieldList, FormField
 from wtforms.validators import NumberRange
 
 
+class IngredientForm(FlaskForm):
+    ingredient = StringField("Ingredient")
+
+
 class RecommenderForm(FlaskForm):
-    ingredients = (StringField("Ingredient"))
+    ingredients = FieldList(FormField(IngredientForm), min_entries=1)
     diet = SelectField("Veg, pesc, etc", choices=[
         ("None", 'None'),
         ('vgn', 'Vegan'),
@@ -23,3 +27,11 @@ class RecommenderForm(FlaskForm):
     exclude_soya = BooleanField("Soya")
 
     submit = SubmitField("Find Recipes")
+
+
+def create_recommender_form(number_ingredient_fields: int = 1):
+    class TempForm(RecommenderForm):
+        pass
+
+    TempForm.ingredients = FieldList(FormField(IngredientForm), min_entries=number_ingredient_fields)
+    return TempForm

@@ -1,11 +1,15 @@
 from app import app
-from app.forms import RecommenderForm
+from app.forms import create_recommender_form, RecommenderForm
 from flask import render_template, session, redirect, url_for
 
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-    form = RecommenderForm()
+    if "NumberIngredientsFields" in session:
+        form = create_recommender_form(number_ingredient_fields=session["NumberIngredientsFields"])()
+    else:
+        form = RecommenderForm()
+    form = create_recommender_form(number_ingredient_fields=5)()
     if form.validate_on_submit():
         data = {
             "Ingredient": form.ingredients.data,
@@ -27,6 +31,7 @@ def index():
 
 @app.route("/recommend")
 def recommend():
+    return str(session.items())
     return session["recommenderFormData"]
 
 
