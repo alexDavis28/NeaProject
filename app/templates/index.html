@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock %}
 {% block content%}
-<div id="page-title" class="title text"><h2>Recommend me recipes</h2></div>
+<div id="page-title" class="title text"><legend><h2>Recommend me recipes</h2></legend></div>
 <div id="recipe-form" class="form">
-    <form method="POST">
+    <form method="POST" id="recommender-form">
+        <fieldset>
         {{ form.hidden_tag() }}
         <div>
             {{form.ingredients.label}}
@@ -21,7 +22,8 @@
             {{form.max_time()}}
         </div>
         <div id="excluded-ingredients">
-            <div ><p>Ingredients to exclude</p></div>
+            <fieldset>
+            <div><legend>Ingredients to exclude</legend></div>
             <div id="excluded-ingredients-fields">
                 <div id="exclude-celery" class="form-field checkbox-field">
                     {{form.exclude_celery.label}}
@@ -55,11 +57,13 @@
                     {{form.exclude_soya.label}}
                     {{form.exclude_soya()}}
                 </div>
+            </fieldset>
             </div>
         </div>
         <div id="form-submit-button" class=" form-field form-button">
             {{form.submit()}}
         </div>
+    </fieldset>
     </form>
 </div>
 {% endblock%}
