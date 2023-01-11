@@ -4,6 +4,7 @@
 <div id="page-title" class="title text"><h2>Recommend me recipes</h2></div>
 <div id="recipe-form" class="form">
     <form method="POST">
+        {{ form.hidden_tag() }}
         <div>
             {{form.ingredients.label}}
             <br>

@@ -6,7 +6,7 @@ from wtforms.validators import NumberRange
 class RecommenderForm(FlaskForm):
     ingredients = (StringField("Ingredient"))
     diet = SelectField("Veg, pesc, etc", choices=[
-        (None, 'None'),
+        ("None", 'None'),
         ('vgn', 'Vegan'),
         ('veg', 'Vegetarian'),
         ('psc', 'Pescetarian')
