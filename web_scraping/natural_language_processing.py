@@ -21,7 +21,7 @@ def find_phrases(tagged_tokens: list) -> list:
     tagged_tokens = [token for token in tagged_tokens if token[0] not in ignore_words]
 
     for tagged_token in tagged_tokens:
-        if tagged_token[1] in tags and tagged_token[0].isalpha():
+        if tagged_token[1] in tags:
             current_phrase_tokens.append(tagged_token)
         elif current_phrase_tokens:
             phrases.append(" ".join([token[0] for token in current_phrase_tokens]))
@@ -46,3 +46,5 @@ def identify_ingredient(text: str) -> Optional[Ingredient]:
     if ingredient:
         return Ingredient(ingredient)
     return None
+
+print(identify_ingredient(("all-purpose flour")).name)
