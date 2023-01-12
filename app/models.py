@@ -55,3 +55,8 @@ class WebScraper(ABC):
     @abstractmethod
     def find_recipe_links(url: str) -> list[str]:
         pass
+
+    @staticmethod
+    @abstractmethod
+    def find_links_to_scrape(recipe_site: str):
+        pass

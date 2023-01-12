@@ -45,3 +45,61 @@ class AllRecipes(WebScraper):
         soup = self.make_soup(url)
         links = [element.get("href") for element in soup.findAll("a", class_="mntl-card-list-items")]
         return links
+
+    def find_links_to_scrape(self, recipe_site: str):
+        links_file_path = f"{recipe_site}_data\\{recipe_site}links.txt"
+        soup = self.make_soup("https://www.allrecipes.com/")
+        links = soup.find(id="header-nav_1-0").findAll("a")
+        links = [l.get("href") for l in links]
+
+        links_to_scrape = []
+        for link in links:
+            try:
+                recipe_links = self.find_recipe_links(link)
+                for recipe_link in recipe_links:
+                    print(recipe_link)
+                    links_to_scrape.append(recipe_link)
+            except Exception as e:
+                print(e)
+
+        print(len(links_to_scrape))
+        input()
+
+        # 3908
+        print("part 2")
+        soup = self.make_soup("https://www.allrecipes.com/recipes-a-z-6735880")
+        links = soup.find(id="alphabetical-list_1-0").findAll("a")
+        links = [l.get("href") for l in links]
+        for link in links:
+            try:
+                recipe_links = self.find_recipe_links(link)
+                for recipe_link in recipe_links:
+                    print(recipe_link)
+                    links_to_scrape.append(recipe_link)
+            except Exception as e:
+                print(e)
+        print(len(links_to_scrape))
+        input()
+        # 23308
+
+        soup = self.make_soup("https://www.allrecipes.com/ingredients-a-z-6740416")
+        links = soup.find(id="alphabetical-list_1-0").findAll("a")
+        links = [l.get("href") for l in links]
+        for link in links:
+            try:
+                recipe_links = self.find_recipe_links(link)
+                for recipe_link in recipe_links:
+                    print(recipe_link)
+                    links_to_scrape.append(recipe_link)
+            except Exception as e:
+                print(e)
+        print(len(links_to_scrape))
+        input()
+        # 27254
+
+        unique_links = set(links_to_scrape)
+        print(len(unique_links))
+        with open(links_file_path, "w+") as file:
+            file.write("\n".join(unique_links))
+            print("file written")
+        # 16,639
