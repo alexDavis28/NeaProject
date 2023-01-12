@@ -46,5 +46,3 @@ def identify_ingredient(text: str) -> Optional[Ingredient]:
     if ingredient:
         return Ingredient(ingredient)
     return None
-
-print(identify_ingredient(("all-purpose flour")).name)
