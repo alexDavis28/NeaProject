@@ -12,8 +12,7 @@ class AllRecipes(WebScraper):
 
         # Find ingredients
         raw_ingredients = [i.text.strip() for i in soup.select('span[data-ingredient-name="true"]')]
-        identified_ingredients = [identify_ingredient(i) for i in raw_ingredients if i]
-        ingredients = [Ingredient(i) for i in identified_ingredients]
+        ingredients = [identify_ingredient(i) for i in raw_ingredients if i]
 
         # Find total prep time:
         total_time_regex = r"(?<=Total Time:\n)( *\d+ (hr(s)?|min(s)?) *)+"
