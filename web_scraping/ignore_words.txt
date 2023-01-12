@@ -1,0 +1,11 @@
+tablespoon
+slice
+cup
+pan
+dish
+lb
+tsp
+ml
+tbsp
+min
+optional
