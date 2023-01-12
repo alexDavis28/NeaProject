@@ -20,16 +20,16 @@ def find_phrases(tagged_tokens: list) -> list:
         ignore_words = file.read().splitlines()
     tagged_tokens = [token for token in tagged_tokens if token[0] not in ignore_words]
 
-    while i < len(tagged_tokens):
-        if tagged_tokens[i][1] in tags:
-            current_phrase_tokens.append(tagged_tokens[i])
+    for tagged_token in tagged_tokens:
+        if tagged_token[1] in tags and tagged_token[0].isalpha():
+            current_phrase_tokens.append(tagged_token)
         elif current_phrase_tokens:
             phrases.append(" ".join([token[0] for token in current_phrase_tokens]))
             current_phrase_tokens.clear()
         i += 1
-
-    if current_phrase_tokens:
-        phrases.append(" ".join([token[0] for token in current_phrase_tokens]))
+    else:
+        if current_phrase_tokens:
+            phrases.append(" ".join([token[0] for token in current_phrase_tokens]))
 
     return phrases
 
@@ -42,7 +42,7 @@ def identify_ingredient(text: str) -> Optional[Ingredient]:
 
     # Identify sequences of nouns
     phrases = find_phrases(tagged_tokens)
-    ingredient = ", ".join(phrases) if phrases else None
+    ingredient = " ".join(phrases) if phrases else None
     if ingredient:
         return Ingredient(ingredient)
     return None
