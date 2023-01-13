@@ -21,6 +21,9 @@ def batch_scrape_pages(recipe_site: str, scraper: scrapers.WebScraper, start: in
             recipe = scraper.scrape_page(link)
             ingredients_data += [ingredient.__dict__ for ingredient in recipe.ingredients]
             recipes.append(scraper.scrape_page(link))
+        except AttributeError as e:
+            print("Invalid page " + link)
+            print(e)
         except Exception as e:
             print(e, link)
 
@@ -37,7 +40,15 @@ def batch_scrape_pages(recipe_site: str, scraper: scrapers.WebScraper, start: in
 
 all_recipes_scraper = scrapers.AllRecipes()
 # scraper.find_links_to_scrape("allrecipes")
-batch_scrape_pages("allrecipes", all_recipes_scraper, 2000, 3000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 8000, 9000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 9000, 10000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 10000, 11000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 11000, 12000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 12000, 13000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 13000, 14000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 14000, 15000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 15000, 16000)
+batch_scrape_pages("allrecipes", all_recipes_scraper, 16000, 16639)
 
 '''
 AllRecipes
