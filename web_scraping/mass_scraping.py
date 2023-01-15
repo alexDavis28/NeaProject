@@ -1,6 +1,7 @@
 import json
 import scrapers
 import time
+import os
 
 
 def batch_scrape_pages(recipe_site: str, scraper: scrapers.WebScraper, start: int, end: int):
@@ -38,17 +39,38 @@ def batch_scrape_pages(recipe_site: str, scraper: scrapers.WebScraper, start: in
         json.dump({recipe_site: ingredients_data}, file)
 
 
-all_recipes_scraper = scrapers.AllRecipes()
-# scraper.find_links_to_scrape("allrecipes")
-batch_scrape_pages("allrecipes", all_recipes_scraper, 8000, 9000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 9000, 10000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 10000, 11000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 11000, 12000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 12000, 13000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 13000, 14000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 14000, 15000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 15000, 16000)
-batch_scrape_pages("allrecipes", all_recipes_scraper, 16000, 16639)
+def combine_json(recipe_site: str, ingredients_or_recipes: str):
+    """Combine all json files into one, ingredients_or_recipes should be one of _ingredients_ or _recipes_"""
+    data_path = f"{recipe_site}_data\\"
+    out_path = data_path + f"{recipe_site}{ingredients_or_recipes}combined.json"
+    files = [file for file in os.listdir(data_path) if ingredients_or_recipes in file and file.endswith("json")]
+    data_list = []
+    for file in files:
+        print(file)
+        with open(data_path + file, "r") as file:
+            data = json.load(file)
+            data_list += data[recipe_site]
+    data = {recipe_site: data_list}
+    with open(out_path, "w+") as file:
+        json.dump(data, file)
+
+
+combine_json("allrecipes", "_ingredients_")
+# print(combine_json("allrecipes", "_recipes_")[-1])
+# NOTE: combined recipe file has 8 duplicates
+
+# all_recipes_scraper = scrapers.AllRecipes()
+# # scraper.find_links_to_scrape("allrecipes")
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 8000, 9000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 9000, 10000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 10000, 11000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 11000, 12000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 12000, 13000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 13000, 14000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 14000, 15000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 15000, 16000)
+# batch_scrape_pages("allrecipes", all_recipes_scraper, 16000, 16639)
+
 
 '''
 AllRecipes
