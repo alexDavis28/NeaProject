@@ -5,7 +5,7 @@ from flask import render_template, session, redirect, url_for
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-    """Home page of the site, displaying the reccomender form"""
+    """Home page of the site, displaying the recommender form"""
     form = RecommenderForm()
     if form.validate_on_submit():
         data = {
