@@ -49,14 +49,17 @@ class WebScraper(ABC):
     @staticmethod
     @abstractmethod
     def scrape_page(url: str) -> Recipe:
+        """Scrape a specific page and return a recipe object"""
         pass
 
     @staticmethod
     @abstractmethod
     def find_recipe_links(url: str) -> list[str]:
+        """Find links to recipe pages on a given page"""
         pass
 
     @staticmethod
     @abstractmethod
     def find_links_to_scrape(recipe_site: str):
+        """Create a text file of links to recipe pages"""
         pass
