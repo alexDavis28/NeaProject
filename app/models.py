@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 class Ingredient:
     def __init__(self, name: str, dietary_information: str = None):
         self.name = name
-        self.dietary_information = dietary_information
 
 
 class Recipe:
