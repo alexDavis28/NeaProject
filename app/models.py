@@ -30,12 +30,26 @@ class Recipe:
             return f"{hours} hrs {minutes} mins"
 
 
+class Result(Recipe):
+    def __init__(self, title: str, ingredients: list[Ingredient], total_time: int, url: str, website: str,
+                 relevancy: float):
+        super().__init__(title, ingredients, total_time, url, website)
+        self.relevancy = relevancy
+
+
 class User:
     def __init__(self, first_name: str, last_name: str, email: str, password: str):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.password = password
+
+
+class Query:
+    def __init__(self, raw_ingredient_text: str, cleaned_text: str, max_time: int = -1):
+        self.raw_ingredient_text = raw_ingredient_text
+        self.cleaned_text = cleaned_text
+        self.max_time = max_time
 
 
 class WebScraper(ABC):
