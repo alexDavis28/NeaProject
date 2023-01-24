@@ -1,6 +1,10 @@
+import string
 from abc import ABC, abstractmethod
+from typing import List
 import requests
 from bs4 import BeautifulSoup
+from nltk.stem import WordNetLemmatizer
+from nltk import word_tokenize
 
 
 class Ingredient:
@@ -37,18 +41,28 @@ class Result(Recipe):
 
 
 class User:
-    def __init__(self, first_name: str, last_name: str, email: str, password: str):
+    def __init__(self, first_name: str, last_name: str, email: str, password_hash: str, recipes: list[Recipe]):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.password = password
+        self.password_hash = password_hash
+        self.recipes = recipes
 
 
 class Query:
-    def __init__(self, raw_ingredient_text: str, cleaned_text: str, max_time: int = -1):
-        self.raw_ingredient_text = raw_ingredient_text
-        self.cleaned_text = cleaned_text
+    def __init__(self, raw_ingredients: str, max_time: int = -1):
+        self.raw_ingredients = raw_ingredients
+        self.cleaned_tokens = self.clean_and_tokenize_text(raw_ingredients)
         self.max_time = max_time
+        self.results: list[Result] = []
+
+    @staticmethod
+    def clean_and_tokenize_text(text: str) -> list[str]:
+        wnl = WordNetLemmatizer()
+        text = text.lower()
+        tokens = word_tokenize(text)
+        lemmatized_tokens = [wnl.lemmatize(token) for token in tokens]
+        return lemmatized_tokens
 
 
 class WebScraper(ABC):
