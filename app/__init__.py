@@ -1,6 +1,9 @@
 from flask import Flask
 import config
+from flask_wtf.csrf import CSRFProtect
+
 app = Flask(__name__)
+csrf = CSRFProtect(app)
 app.config["SECRET_KEY"] = config.SECRET_KEY
 app.config["DATABASE"] = config.DATABASE_NAME
 app.config["DATABASE_HOST"] = config.DATABASE_HOST
