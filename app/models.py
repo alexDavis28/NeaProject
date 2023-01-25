@@ -22,15 +22,18 @@ class Recipe:
 
     @property
     def formatted_time(self) -> str:
-        hours = self.total_time // 60
-        minutes = self.total_time % 60
-
-        if hours == 0:
-            return f"{minutes} minutes"
-        elif hours == 1:
-            return f"1 hr {minutes} mins"
+        if self.total_time == -1:
+            return "N/A"
         else:
-            return f"{hours} hrs {minutes} mins"
+            hours = self.total_time // 60
+            minutes = self.total_time % 60
+
+            if hours == 0:
+                return f"{minutes} minutes"
+            elif hours == 1:
+                return f"1 hr {minutes} mins"
+            else:
+                return f"{hours} hrs {minutes} mins"
 
 
 class Result(Recipe):
