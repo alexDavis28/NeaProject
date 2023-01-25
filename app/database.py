@@ -3,7 +3,7 @@ from app import db
 from app.models import Query, Recipe, Ingredient
 
 
-def select_recipes_with_query(query: Query) -> list[Recipe]:
+def select_recipes_with_query(query: Query, limit: int = 5) -> list[Recipe]:
     """Find all recipes matching the query"""
     # open database connection
     cursor = db.connection.cursor()
@@ -19,7 +19,7 @@ def select_recipes_with_query(query: Query) -> list[Recipe]:
                            f"has_ingredient.recipe_id FROM ingredients, has_ingredient WHERE " \
                            f"has_ingredient.ingredient_id=ingredients.ingredient_id AND ingredients.ingredient_id = ANY(" \
                            f"SELECT ingredient_id FROM ingredients WHERE name REGEXP \"{ingredients_regex}\")) GROUP BY " \
-                           f"recipes.recipe_id, recipes.title;"
+                           f"recipes.recipe_id, recipes.title LIMIT {limit};"
     else:
         find_recipes_sql = f"SELECT recipes.*, GROUP_CONCAT(ingredients.name SEPARATOR ',') AS ingredients FROM recipes, " \
                            f"ingredients, has_ingredient WHERE recipes.recipe_id=has_ingredient.recipe_id AND " \
@@ -27,7 +27,7 @@ def select_recipes_with_query(query: Query) -> list[Recipe]:
                            f"has_ingredient.recipe_id FROM ingredients, has_ingredient WHERE " \
                            f"has_ingredient.ingredient_id=ingredients.ingredient_id AND ingredients.ingredient_id = ANY(" \
                            f"SELECT ingredient_id FROM ingredients WHERE name REGEXP \"{ingredients_regex}\")) AND recipes.time <=" \
-                           f"{query.max_time} GROUP BY recipes.recipe_id, recipes.title;"
+                           f"{query.max_time} GROUP BY recipes.recipe_id, recipes.title LIMIT {limit};"
 
     cursor.execute(find_recipes_sql)
     results = cursor.fetchall()
