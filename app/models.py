@@ -50,7 +50,7 @@ class User:
 
 
 class Query:
-    def __init__(self, raw_ingredients: str, max_time: int = -1):
+    def __init__(self, raw_ingredients: str, max_time: int = None):
         self.raw_ingredients = raw_ingredients
         self.cleaned_tokens = self.clean_and_tokenize_text(raw_ingredients)
         self.max_time = max_time
