@@ -59,8 +59,7 @@ class Query:
         wnl = WordNetLemmatizer()
         text = text.lower()
         tokens = word_tokenize(text)
-        unique_tokens = set(tokens)
-        lemmatized_tokens = [wnl.lemmatize(token) for token in unique_tokens]
+        lemmatized_tokens = [wnl.lemmatize(token) for token in tokens]
         tagged_tokens = pos_tag(lemmatized_tokens)
         clean_tokens = [token[0] for token in tagged_tokens if token[1] in ["NN", "NNP", "JJ"]]
         return clean_tokens
