@@ -9,7 +9,7 @@ def select_recipes_with_query(query: Query, limit: int = 5) -> list[Recipe]:
     cursor = db.connection.cursor()
 
     # Create pattern to match ingredient names. Join by | allows any ingredient token to match
-    ingredients_regex = "|".join([f"(\s|-)?{ingredient}(\s|-)?" for ingredient in query.cleaned_tokens])
+    ingredients_regex = "|".join([f"(\s|-|^)+{ingredient}(\s|-|$)+" for ingredient in query.cleaned_tokens])
 
     # need to find a cleaner way to do this
     if query.max_time is None:
