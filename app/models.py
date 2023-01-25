@@ -8,7 +8,7 @@ from nltk import word_tokenize
 
 
 class Ingredient:
-    def __init__(self, name: str, dietary_information: str = None):
+    def __init__(self, name: str):
         self.name = name
 
 
@@ -61,7 +61,8 @@ class Query:
         wnl = WordNetLemmatizer()
         text = text.lower()
         tokens = word_tokenize(text)
-        lemmatized_tokens = [wnl.lemmatize(token) for token in tokens]
+        unique_tokens = set(tokens)
+        lemmatized_tokens = [wnl.lemmatize(token) for token in unique_tokens]
         return lemmatized_tokens
 
 
