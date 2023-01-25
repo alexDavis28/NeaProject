@@ -7,12 +7,11 @@ def select_recipes_with_query(query: Query) -> list[Recipe]:
     """Find all recipes matching the query"""
     # open database connection
     cursor = db.connection.cursor()
-    # SELECT recipes.*, GROUP_CONCAT(ingredients.name SEPARATOR '|') AS ingredients FROM recipes, ingredients,
-    # has_ingredient WHERE recipes.recipe_id=has_ingredient.recipe_id AND
-    # ingredients.ingredient_id=has_ingredient.ingredient_id GROUP BY recipes.recipe_id, recipes.title LIMIT 5;
 
+    # Create pattern to match ingredient names. Join by | allows any ingredient token to match
     ingredients_regex = "|".join([f"(\s|-)?{ingredient}(\s|-)?" for ingredient in query.cleaned_tokens])
 
+    # need to find a cleaner way to do this
     if query.max_time is None:
         find_recipes_sql = f"SELECT recipes.*, GROUP_CONCAT(ingredients.name SEPARATOR ',') AS ingredients FROM recipes, " \
                            f"ingredients, has_ingredient WHERE recipes.recipe_id=has_ingredient.recipe_id AND " \
@@ -34,9 +33,8 @@ def select_recipes_with_query(query: Query) -> list[Recipe]:
     results = cursor.fetchall()
     recipes = []
     for result in results:
-        # print(result)
         ingredients = []
-        for ingredient in result[5].split(","):
+        for ingredient in result[5].split(","):  # Check this against the character in the sql maybe?
             ingredients.append(Ingredient(ingredient))
         recipes.append(Recipe(result[1], ingredients, result[2], result[3], result[4]))
     return recipes
