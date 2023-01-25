@@ -10,16 +10,7 @@ def index():
     if form.validate_on_submit():
         data = {
             "Ingredient": form.ingredients.data,
-            "Diet": form.diet.data,
             "MaxTime": form.max_time.data,
-            "ExcludeCelery": form.exclude_celery.data,
-            "ExcludeDairy": form.exclude_dairy.data,
-            "ExcludeEggs": form.exclude_eggs.data,
-            "ExcludeGluten": form.exclude_gluten.data,
-            "ExcludeMustard": form.exclude_mustard.data,
-            "ExcludeNuts": form.exclude_nuts.data,
-            "ExcludeSesame": form.exclude_sesame.data,
-            "ExcludeSoya": form.exclude_soya.data
         }
         session["recommenderFormData"] = data
         return redirect(url_for("recommend"))
