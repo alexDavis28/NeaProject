@@ -65,6 +65,26 @@ class Query:
         return lemmatized_tokens
 
 
+class PastQueryQueue:
+    def __init__(self, max_items: int):
+        self.max_items = max_items
+        self.items: list[Query] = []
+
+    def __getitem__(self, item):
+        return self.items[item]
+
+    def enqueue(self, query: Query):
+        """Add a query to the queue"""
+        self.items.append(query)
+        if len(self.items) > self.max_items:
+            # Remove the first item if adding a new item would exceed the max_items limit
+            self.items.pop(0)
+
+    def dequeue(self) -> Query:
+        """Remove the first"""
+        return self.items.pop(0)
+
+
 class WebScraper(ABC):
     @staticmethod
     def make_soup(url: str) -> BeautifulSoup:
