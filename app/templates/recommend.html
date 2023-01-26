@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Recommend{% endblock %}
+{% block content%}
+<p>Recommend</p>
+<br>
+
+{% for recipe in results %}
+<div class="recipe_result" id="recipe-{{ loop.index }}" style="border: solid black">
+    <a href="{{ recipe.url }}">
+        <div class="recipe-title">
+            <h3>{{ recipe.title }}</h3>
+        </div>
+        <div class="recipe-time">
+            <p>Total time: {{ recipe.formatted_time }}</p>
+        </div>
+        <div class="recipe-ingredients">
+            <ul>
+                {% for ingredient in recipe.ingredients %}
+                    <li>{{ ingredient.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </a>
+</div>
+{% endfor %}
+
+{% endblock%}

@@ -11,54 +11,10 @@
             <br>
             {{form.ingredients()}}
         </div>
-        <div>
-            {{form.diet.label}}
-            <br>
-            {{form.diet()}}
-        </div>
         <div id="max-time-field" class="form-field number-field">
             {{form.max_time.label}}
             <br>
             {{form.max_time()}}
-        </div>
-        <div id="excluded-ingredients">
-            <fieldset>
-            <div><legend>Ingredients to exclude</legend></div>
-            <div id="excluded-ingredients-fields">
-                <div id="exclude-celery" class="form-field checkbox-field">
-                    {{form.exclude_celery.label}}
-                    {{form.exclude_celery()}}
-                </div>
-                <div id="exclude-dairy" class="form-field checkbox-field">
-                    {{form.exclude_dairy.label}}
-                    {{form.exclude_dairy()}}
-                </div>
-                <div id="exclude-eggs" class="form-field checkbox-field">
-                    {{form.exclude_eggs.label}}
-                    {{form.exclude_eggs()}}
-                </div>
-                <div id="exclude-gluten" class="form-field checkbox-field">
-                    {{form.exclude_gluten.label}}
-                    {{form.exclude_gluten()}}
-                </div>
-                <div id="exclude-mustard" class="form-field checkbox-field">
-                    {{form.exclude_mustard.label}}
-                    {{form.exclude_mustard()}}
-                </div>
-                <div id="exclude-nuts" class="form-field checkbox-field">
-                    {{form.exclude_nuts.label}}
-                    {{form.exclude_nuts()}}
-                </div>
-                <div id="exclude-sesame" class="form-field checkbox-field">
-                    {{form.exclude_sesame.label}}
-                    {{form.exclude_sesame()}}
-                </div>
-                <div id="exclude-soya" class="form-field checkbox-field">
-                    {{form.exclude_soya.label}}
-                    {{form.exclude_soya()}}
-                </div>
-            </fieldset>
-            </div>
         </div>
         <div id="form-submit-button" class=" form-field form-button">
             {{form.submit()}}
