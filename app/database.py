@@ -29,7 +29,7 @@ def recipe_dataframe_from_query(query: Query) -> pd.DataFrame:
 
 
 def create_recipe_select_sql(query: Query) -> str:
-    """Creates a sql query to select recipes that contain any ingredient given in the user query"""
+    """Creates a sql query to select recipes that contain any ingredient that matches any given in the user query"""
     # Create pattern to match ingredient names. Join by | allows any ingredient token to match
     ingredients_regex = "|".join(query.cleaned_tokens)
 
