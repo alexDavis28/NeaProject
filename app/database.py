@@ -22,6 +22,7 @@ def select_recipes_with_query(query: Query, limit: int = 5) -> list[Recipe]:
 
 
 def recipe_dataframe_from_query(query: Query) -> pd.DataFrame:
+    """Pandas dataframe from results of query"""
     sql = create_recipe_select_sql(query)
     connection = db.connect
     dataframe = pd.read_sql(sql, connection).set_index("recipe_id")
@@ -30,6 +31,7 @@ def recipe_dataframe_from_query(query: Query) -> pd.DataFrame:
 
 def create_recipe_select_sql(query: Query) -> str:
     """Creates a sql query to select recipes that contain any ingredient that matches any given in the user query"""
+    # TODO: use vals instead of interpolation
     # Create pattern to match ingredient names. Join by | allows any ingredient token to match
     ingredients_regex = "|".join(query.cleaned_tokens)
 

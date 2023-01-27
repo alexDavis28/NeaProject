@@ -59,6 +59,8 @@ class Query:
 
     @staticmethod
     def clean_and_tokenize_text(text: str) -> list[str]:
+        """Return a list of cleaned tokens"""
+        # TODO replace this with a function in the NLP module
         wnl = WordNetLemmatizer()
         text = text.lower()
         tokens = word_tokenize(text)

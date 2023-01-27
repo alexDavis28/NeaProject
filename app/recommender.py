@@ -9,13 +9,12 @@ pd.set_option("display.max_rows", None)
 
 
 def magnitude(vector: list[float]) -> float:
-    # TODO make this faster
+    """Calculate the magnitude of a vector, ie: [x, y] -> sqrt(x^2 + y^2)"""
     return math.sqrt(sum([math.pow(i, 2) for i in vector]))
 
 
 def score_recipes_by_relevancy_from_query(query: Query, limit: int = 20) -> list[Result]:
-    # TODO better comments
-    # Create a recipe dataframe from the query using the database
+    """Return a list of recipes with relevancy scores"""
 
     # Read the recipe data from the database
     recipe_matrix = database.recipe_dataframe_from_query(query)
@@ -66,7 +65,7 @@ def score_recipes_by_relevancy_from_query(query: Query, limit: int = 20) -> list
     query_tf_idf = query_term_frequency.mul(inverse_document_frequency)
     query_tf_idf_series = query_tf_idf.iloc[0]  # The query tf-idf needs to be stored as a series for the dot product
 
-    print("magnitudes")
+    # print("magnitudes")
     # Calculate the magnitude of each recipe vector
     recipe_magnitudes = recipe_tf_idf_matrix.apply(lambda x: magnitude(x), axis=1)
     # Calculate the magnitude of the query vector
