@@ -84,13 +84,13 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     # Sort the recipe ids by the relevancy score
     vector_similarities.sort_values(inplace=True, ascending=False)
     recipes = []
-    for i in range(limit if limit <= number_of_recipes else number_of_recipes):
-        relevancy = vector_similarities.iloc[0]
+    for i in range(number_of_recipes):
+        relevancy = vector_similarities.iloc[i].item()
         recipe_data = recipe_matrix.loc[vector_similarities.index[i]]
         ingredients = [Ingredient(ingredient) for ingredient in recipe_data["ingredients"].split(",")]
         recipe = Result(recipe_data["title"],
                         ingredients,
-                        recipe_data["time"],
+                        recipe_data["time"].item(),
                         recipe_data["url"],
                         recipe_data["website"],
                         relevancy
