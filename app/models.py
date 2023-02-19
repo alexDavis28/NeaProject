@@ -30,7 +30,6 @@ class Recipe:
             "website": self.website
         }
 
-
     @property
     def formatted_time(self) -> str:
         if self.total_time == -1:
@@ -52,6 +51,16 @@ class Result(Recipe):
                  relevancy: float):
         super().__init__(title, ingredients, total_time, url, website)
         self.relevancy = relevancy
+
+    def as_dict(self):
+        return {
+            "title": self.title,
+            "ingredients": [i.as_dict() for i in self.ingredients],
+            "total_time": self.total_time,
+            "url": self.url,
+            "website": self.website,
+            "relevancy": self.relevancy
+        }
 
 
 class User:
