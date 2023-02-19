@@ -14,7 +14,7 @@ def magnitude(vector: list[float]) -> float:
 
 
 def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
-    """Return a list of recipes with relevancy scores"""
+    """Returns an unsorted list of recipes with relevancy scores"""
 
     # Read the recipe data from the database
     recipe_matrix = database.recipe_dataframe_from_query(query)
