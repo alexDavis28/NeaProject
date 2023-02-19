@@ -9,6 +9,9 @@ class Ingredient:
     def __init__(self, name: str):
         self.name = name
 
+    def as_dict(self):
+        return {"name": self.name}
+
 
 class Recipe:
     def __init__(self, title: str, ingredients: list[Ingredient], total_time: int, url: str, website: str):
@@ -17,6 +20,16 @@ class Recipe:
         self.total_time = total_time
         self.url = url
         self.website = website
+
+    def as_dict(self):
+        return {
+            "title": self.title,
+            "ingredients": [i.as_dict() for i in self.ingredients],
+            "total_time": self.total_time,
+            "url": self.url,
+            "website": self.website
+        }
+
 
     @property
     def formatted_time(self) -> str:
