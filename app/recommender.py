@@ -81,8 +81,7 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     # Calculate the angle between the vectors and bound it within positive space (0.5 to 1)
     vector_similarities = vector_angles.apply(lambda x: 1 - (math.acos(x) / math.pi))
     vector_similarities.fillna(0, inplace=True)
-    # Sort the recipe ids by the relevancy score
-    vector_similarities.sort_values(inplace=True, ascending=False)
+
     recipes = []
     for i in range(number_of_recipes):
         relevancy = vector_similarities.iloc[i].item()
