@@ -39,5 +39,23 @@ def profile():
 
 @app.route('/api')
 def api():
-    # Route for info page
+    # Route for api info page
     return render_template("api.html")
+
+
+@app.route("/api/search")
+def api_search():
+    # API search function
+    if "ingredients" not in request.args:
+        return "400: Ingredients string not found", 400
+    raw_ingredients = request.args["ingredients"]
+
+    if "max_time" in request.args:
+        max_time = request.args["max_time"]
+    else:
+        max_time = None
+
+    query = Query(raw_ingredients, max_time)
+    results = recommender.find_results(query, sort_mode="relevancy")
+    data = {"results": [r.as_dict() for r in results]}
+    return data
