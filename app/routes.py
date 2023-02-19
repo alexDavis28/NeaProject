@@ -21,6 +21,8 @@ def recommend():
     query_data = session["query"]
     query = Query(query_data["raw_ingredients"], query_data["max_time"])
     results = recommender.find_results(query, sort_mode="relevancy")
+    # Limit to top 30 results
+    results = results[:30]
     return render_template("recommend.html", results=results)
 
 
