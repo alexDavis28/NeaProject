@@ -23,7 +23,7 @@ def recommend():
     results = recommender.find_results(query, sort_mode="relevancy")
     # Limit to top 30 results
     results = results[:30]
-    return render_template("recommend.html", results=results)
+    return render_template("recommend.html", results=results, query_ingredients=query.cleaned_tokens, any=any)
 
 
 @app.route('/info')

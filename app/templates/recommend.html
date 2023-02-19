@@ -16,7 +16,11 @@
         <div class="recipe-ingredients">
             <ul>
                 {% for ingredient in recipe.ingredients %}
+                {% if ingredient.name.split()|select("in", query_ingredients)|first %}
+                    <li><b>{{ ingredient.name }}</b></li>
+                {% else %}
                     <li>{{ ingredient.name }}</li>
+                {% endif %}
                 {% endfor %}
             </ul>
         </div>
