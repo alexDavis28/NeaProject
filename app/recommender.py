@@ -13,7 +13,7 @@ def magnitude(vector: list[float]) -> float:
     return math.sqrt(sum([math.pow(i, 2) for i in vector]))
 
 
-def score_recipes_by_relevancy_from_query(query: Query, limit: int = 20) -> list[Result]:
+def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     """Return a list of recipes with relevancy scores"""
 
     # Read the recipe data from the database
@@ -97,3 +97,13 @@ def score_recipes_by_relevancy_from_query(query: Query, limit: int = 20) -> list
                         )
         recipes.append(recipe)
     return recipes
+
+
+def find_results(query: Query, sort_mode: str) -> list[Result]:
+    results = score_recipes_by_relevancy_from_query(query)
+    match sort_mode:
+        case "relevancy":
+            results.sort(key=lambda x: x.relevancy, reverse=True)
+        case _:
+            pass
+    return results

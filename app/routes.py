@@ -1,6 +1,6 @@
 from app import app, recommender
 from app.forms import RecommenderForm
-from flask import render_template, session, redirect, url_for
+from flask import render_template, session, redirect, url_for, request
 from app.models import Query
 
 
@@ -20,8 +20,7 @@ def index():
 def recommend():
     query_data = session["query"]
     query = Query(query_data["raw_ingredients"], query_data["max_time"])
-    results = recommender.score_recipes_by_relevancy_from_query(query, limit=20)
-    results.sort(key=lambda x: x.relevancy)
+    results = recommender.find_results(query, sort_mode="relevancy")
     return render_template("recommend.html", results=results)
 
 
