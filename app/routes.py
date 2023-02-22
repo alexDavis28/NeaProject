@@ -55,8 +55,12 @@ def api_search():
         max_time = request.args["max_time"]
     else:
         max_time = None
+    if "sort_mode" in request.args:
+        sort_mode = request.args["sort_mode"]
+    else:
+        sort_mode = "relevancy"
 
     query = Query(raw_ingredients, max_time)
-    results = recommender.find_results(query, sort_mode="relevancy")
+    results = recommender.find_results(query, sort_mode)
     data = {"results": [r.as_dict() for r in results]}
     return data
