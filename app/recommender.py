@@ -1,6 +1,7 @@
 import pandas as pd
 import nltk
 import math
+import random
 from app import database
 from app.models import Query, Result, Ingredient
 
@@ -98,11 +99,52 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     return recipes
 
 
+def quick_sort(results: list[Result], sort_mode: str) -> list[Result]:
+
+    def get_sort_mode_value(item: Result):
+        match sort_mode:
+            case "relevancy":
+                return item.relevancy
+            case "title":
+                return item.title
+            case "total_time":
+                return item.total_time
+            case _:
+                raise ValueError("Invalid sort mode")
+
+    length = len(results)
+
+    # Base case
+    if length < 2:
+        return results
+
+    # Simplest case
+    if length == 2:
+        if get_sort_mode_value(results[0]) > get_sort_mode_value(results[1]):
+            results[0], results[1] = results[1], results[0]
+        return results
+
+    # Recursive case
+    pivot = random.randint(0, length - 1)
+    pivot_value = get_sort_mode_value(results[pivot])
+
+    left = []
+    right = []
+
+    for i in range(length):
+        if i != pivot:
+            r = get_sort_mode_value(results[i])
+            if r > pivot_value:
+                right.append(results[i])
+            else:
+                left.append(results[i])
+
+    return quick_sort(left, sort_mode) + [results[pivot]] + quick_sort(right, sort_mode)
+
+
 def find_results(query: Query, sort_mode: str) -> list[Result]:
     results = score_recipes_by_relevancy_from_query(query)
-    match sort_mode:
-        case "relevancy":
-            results.sort(key=lambda x: x.relevancy, reverse=True)
-        case _:
-            pass
+    results = quick_sort(results, sort_mode)
+    if sort_mode == "relevancy":
+        results.reverse()
     return results
