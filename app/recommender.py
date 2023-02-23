@@ -110,7 +110,7 @@ def quick_sort(results: list[Result], sort_mode: str) -> list[Result]:
             case "total_time":
                 return item.total_time
             case _:
-                raise ValueError("Invalid sort mode")
+                raise ValueError(f"Invalid sort mode: {sort_mode}")
 
     length = len(results)
 
@@ -142,9 +142,9 @@ def quick_sort(results: list[Result], sort_mode: str) -> list[Result]:
     return quick_sort(left, sort_mode) + [results[pivot]] + quick_sort(right, sort_mode)
 
 
-def find_results(query: Query, sort_mode: str) -> list[Result]:
+def find_results(query: Query) -> list[Result]:
     results = score_recipes_by_relevancy_from_query(query)
-    results = quick_sort(results, sort_mode)
-    if sort_mode == "relevancy":
+    results = quick_sort(results, query.sort_mode)
+    if query.sort_mode == "relevancy":
         results.reverse()
     return results

@@ -73,9 +73,10 @@ class User:
 
 
 class Query:
-    def __init__(self, raw_ingredients: str, max_time: int = None):
+    def __init__(self, raw_ingredients: str, sort_mode: str = "relevancy", max_time: int = None):
         self.raw_ingredients = raw_ingredients
         self.cleaned_tokens = self.clean_and_tokenize_text(raw_ingredients)
+        self.sort_mode = sort_mode
         self.max_time = max_time
         self.results: list[Result] = []
 

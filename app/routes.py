@@ -9,7 +9,7 @@ def index():
     """Home page of the site, displaying the recommender form"""
     form = RecommenderForm()
     if form.validate_on_submit():
-        query = Query(form.ingredients.data, form.max_time.data)
+        query = Query(form.ingredients.data, form.sort_mode.data, form.max_time.data)
 
         session["query"] = query.__dict__
         return redirect(url_for("recommend"))
@@ -19,11 +19,11 @@ def index():
 @app.route("/recommend")
 def recommend():
     query_data = session["query"]
-    query = Query(query_data["raw_ingredients"], query_data["max_time"])
-    results = recommender.find_results(query, sort_mode="relevancy")
+    query = Query(query_data["raw_ingredients"], query_data["sort_mode"], query_data["max_time"])
+    results = recommender.find_results(query)
     # Limit to top 30 results
     results = results[:30]
-    return render_template("recommend.html", results=results, query_ingredients=query.cleaned_tokens, any=any)
+    return render_template("recommend.html", results=results, query_ingredients=query.cleaned_tokens)
 
 
 @app.route('/info')
@@ -60,7 +60,7 @@ def api_search():
     else:
         sort_mode = "relevancy"
 
-    query = Query(raw_ingredients, max_time)
-    results = recommender.find_results(query, sort_mode)
+    query = Query(raw_ingredients, sort_mode, max_time)
+    results = recommender.find_results(query)
     data = {"results": [r.as_dict() for r in results]}
     return data
