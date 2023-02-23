@@ -11,6 +11,7 @@ pd.set_option("display.max_rows", None)
 
 def magnitude(vector: list[float]) -> float:
     """Calculate the magnitude of a vector, ie: [x, y] -> sqrt(x^2 + y^2)"""
+    # List comps are faster than for loops, necessary given how awfully slow this runs
     return math.sqrt(sum([math.pow(i, 2) for i in vector]))
 
 
