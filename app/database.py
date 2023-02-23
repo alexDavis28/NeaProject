@@ -1,10 +1,10 @@
 from flask import Flask
 from app import db
-from app.models import Query, Recipe, Ingredient
+from app.models import Query, Result, Ingredient
 import pandas as pd
 
 
-def select_recipes_with_query(query: Query, limit: int = 5) -> list[Recipe]:
+def select_recipes_with_query(query: Query) -> list[Result]:
     """Find all recipes with at least one ingredient that matches a token in the query"""
     # open database connection
     cursor = db.connection.cursor()
@@ -17,7 +17,7 @@ def select_recipes_with_query(query: Query, limit: int = 5) -> list[Recipe]:
         ingredients = []
         for ingredient in result[5].split(","):  # Check this against the character in the sql maybe?
             ingredients.append(Ingredient(ingredient))
-        recipes.append(Recipe(result[1], ingredients, result[2], result[3], result[4]))
+        recipes.append(Result(result[1], ingredients, result[2], result[3], result[4], relevancy=-1))
     return recipes
 
 

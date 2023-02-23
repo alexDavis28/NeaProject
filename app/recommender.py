@@ -143,8 +143,11 @@ def quick_sort(results: list[Result], sort_mode: str) -> list[Result]:
 
 
 def find_results(query: Query) -> list[Result]:
-    results = score_recipes_by_relevancy_from_query(query)
-    results = quick_sort(results, query.sort_mode)
     if query.sort_mode == "relevancy":
+        results = score_recipes_by_relevancy_from_query(query)
+        results = quick_sort(results, query.sort_mode)
         results.reverse()
+    else:
+        results = database.select_recipes_with_query(query)
+        results = quick_sort(results, query.sort_mode)
     return results
