@@ -17,7 +17,7 @@ def select_recipes_with_query(query: Query) -> list[Result]:
         ingredients = []
         for ingredient in result[5].split(","):  # Check this against the character in the sql maybe?
             ingredients.append(Ingredient(ingredient))
-        recipes.append(Result(result[1], ingredients, result[2], result[3], result[4], relevancy=-1))
+        recipes.append(Result(result[1], ingredients, result[2], result[3], result[4]))
     return recipes
 
 

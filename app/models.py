@@ -48,7 +48,7 @@ class Recipe:
 
 class Result(Recipe):
     def __init__(self, title: str, ingredients: list[Ingredient], total_time: int, url: str, website: str,
-                 relevancy: float):
+                 relevancy: float = None):
         super().__init__(title, ingredients, total_time, url, website)
         self.relevancy = relevancy
 
@@ -73,12 +73,13 @@ class User:
 
 
 class Query:
-    def __init__(self, raw_ingredients: str, sort_mode: str = "relevancy", max_time: int = None):
+    def __init__(self, raw_ingredients: str, sort_mode: str = "relevancy", max_time: int = None, limit: int = None):
         self.raw_ingredients = raw_ingredients
         self.cleaned_tokens = self.clean_and_tokenize_text(raw_ingredients)
         self.sort_mode = sort_mode
         self.max_time = max_time
         self.results: list[Result] = []
+        self.limit = limit
 
     @staticmethod
     def clean_and_tokenize_text(text: str) -> list[str]:
