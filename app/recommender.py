@@ -101,7 +101,7 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
 
 def quick_sort(results: list[Result], sort_mode: str) -> list[Result]:
 
-    def get_sort_mode_value(item: Result):
+    def get_sorting_value(item: Result):
         match sort_mode:
             case "relevancy":
                 return item.relevancy
@@ -120,20 +120,20 @@ def quick_sort(results: list[Result], sort_mode: str) -> list[Result]:
 
     # Simplest case
     if length == 2:
-        if get_sort_mode_value(results[0]) > get_sort_mode_value(results[1]):
+        if get_sorting_value(results[0]) > get_sorting_value(results[1]):
             results[0], results[1] = results[1], results[0]
         return results
 
     # Recursive case
     pivot = random.randint(0, length - 1)
-    pivot_value = get_sort_mode_value(results[pivot])
+    pivot_value = get_sorting_value(results[pivot])
 
     left = []
     right = []
 
     for i in range(length):
         if i != pivot:
-            r = get_sort_mode_value(results[i])
+            r = get_sorting_value(results[i])
             if r > pivot_value:
                 right.append(results[i])
             else:
