@@ -64,13 +64,23 @@ class Result(Recipe):
 
 
 class User:
-    def __init__(self, first_name: str, last_name: str, email: str, password_hash: str, saved_recipes: list[Recipe] = None):
+    def __init__(self, first_name: str, last_name: str, email: str, password: str, saved_recipes: list[Recipe] = None):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.password_hash = password_hash
+        self.password_hash = self.hash_password(password)
         self.saved_recipes = saved_recipes
 
+    @staticmethod
+    def hash_password(password: str) -> str:
+        total = 0
+        for i, character in enumerate(password):
+            total += ord(character) ** (i + 1)
+        product = 1
+        for character in password:
+            product *= ord(character)
+        value = total * product
+        return str(value % 2147483647)
 
 class Query:
     def __init__(self, raw_ingredients: str, sort_mode: str = "relevancy", max_time: int = None, limit: int = None):
