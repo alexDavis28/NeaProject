@@ -2,4 +2,13 @@
 {% block title %}Profile{% endblock %}
 {% block content%}
 <div id="page-title" class="title text"><legend><h2>Profile</h2></legend></div>
+<div id="user name"><h3>{{user.first_name}} {{user.last_name}}</h3></div>
+<br>
+<div id="logout-button" class="button">
+    <a href='{{url_for("logout")}}'>
+        <button>
+            Logout
+        </button>
+    </a>
+</div>
 {% endblock%}

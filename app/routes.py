@@ -42,11 +42,12 @@ def register():
     if form.validate_on_submit():
         # Create profile
         user = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
+        user.password_hash = user.calculate_password_hash()
         profile_added_successfully = add_profile_to_database(user)
         if not profile_added_successfully:
             flash("Email already in use", "form")
         else:
-            redirect("login")
+            return redirect("/login")
     return render_template("register.html", form=form)
 
 
@@ -60,20 +61,29 @@ def login():
         stored_user = find_user_by_email(email)
         login_user = User(first_name=stored_user.first_name, last_name=stored_user.last_name, email=email,
                           plaintext_password=password)
-        login_user.password_hash = login_user.calculate_password_hash(password)
+        login_user.password_hash = login_user.calculate_password_hash()
         if login_user.password_hash == stored_user.password_hash:
             session["active_user"] = email
-            return redirect("profile")
+            return redirect("/profile")
         else:
             flash("Invalid email or password", "form")
     return render_template("login.html", form=form)
 
 
+@app.route("/logout")
+def logout():
+    # Logout user
+    if "active_user" in session:
+        del session["active_user"]
+    return redirect("/")
+
+
 @app.route("/profile")
 def profile():
     if "active_user" in session:
-        # display currently logged in account
-        return render_template("profile.html")
+        # find currently logged in account
+        user = find_user_by_email(session["active_user"])
+        return render_template("profile.html", user=user)
     else:
         return redirect("login")
 
