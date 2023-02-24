@@ -27,3 +27,8 @@ class LoginForm(FlaskForm):
     email = EmailField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Login")
+
+
+class SaveRecipeForm(FlaskForm):
+    # Provides a csrf token to the save recipe button
+    pass
