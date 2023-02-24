@@ -1,6 +1,6 @@
 from flask import Flask
 from app import db
-from app.models import Query, Result, Ingredient, User
+from app.models import Query, Result, Ingredient, User, Recipe
 import pandas as pd
 import MySQLdb
 from typing import Optional
@@ -97,3 +97,15 @@ def user_save_recipe(recipe_title: str, user: User):
     values = (user.user_id, recipe_id)
     cursor.execute(insert_sql, values)
     db.connection.commit()
+
+
+def find_user_saved_recipes(user: User) -> list[Recipe]:
+    cursor = db.connection.cursor()
+    sql = f"SELECT * FROM recipes JOIN saved_recipe ON recipes.recipe_id=saved_recipe.recipe_id WHERE" \
+          f" user_id={user.user_id};"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    recipes = []
+    for result in results:
+        recipes.append(Recipe(title=result[1], ingredients=[], total_time=result[2], url=result[3], website=result[4]))
+    return recipes

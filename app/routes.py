@@ -2,7 +2,7 @@ from app import app, recommender
 from app.forms import RecommenderForm, CreateProfileForm, LoginForm, SaveRecipeForm
 from flask import render_template, session, redirect, url_for, request, flash
 from app.models import Query, User
-from app.database import add_profile_to_database, find_user_by_email, user_save_recipe
+from app.database import add_profile_to_database, find_user_by_email, user_save_recipe, find_user_saved_recipes
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -106,7 +106,8 @@ def profile():
     if "active_user_email" in session:
         # find currently logged in account
         user = find_user_by_email(session["active_user_email"])
-        return render_template("profile.html", user=user)
+        saved_recipes = find_user_saved_recipes(user)
+        return render_template("profile.html", user=user, recipes=saved_recipes)
     else:
         return redirect("login")
 

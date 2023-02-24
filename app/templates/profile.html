@@ -2,7 +2,7 @@
 {% block title %}Profile{% endblock %}
 {% block content%}
 <div id="page-title" class="title text"><legend><h2>Profile</h2></legend></div>
-<div id="user name"><h3>{{user.first_name}} {{user.last_name}}</h3></div>
+<div id="user name"><h2>{{user.first_name}} {{user.last_name}}</h2></div>
 <br>
 <div id="logout-button" class="button">
     <a href='{{url_for("logout")}}'>
@@ -10,5 +10,17 @@
             Logout
         </button>
     </a>
+</div>
+<div id="saved-recipes">
+    <h3>Saved recipes</h3>
+    {% for recipe in recipes %}
+    <div class="saved-recipe" id="recipe-{{ loop.index }}" style="border: solid black">
+        <a href="{{ recipe.url }}">
+            <div class="recipe-title">
+                <h3>{{ recipe.title }}</h3>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
 </div>
 {% endblock%}
