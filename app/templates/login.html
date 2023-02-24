@@ -27,7 +27,7 @@
             <div id="alerts">
                 <ul>
                     {% for type, content in alerts %}
-                        {% if type=="form" %}
+                        {% if type=="form" or type=="info"%}
                             <li>
                                 {{ content }}
                             </li>
