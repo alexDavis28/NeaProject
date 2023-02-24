@@ -71,7 +71,13 @@ def login():
 
 @app.route("/profile")
 def profile():
+    if "active_user" in session:
+        # display currently logged in account
+        return session["active_user"]
+    else:
+        return redirect("login")
     return render_template("profile.html")
+
 
 @app.route('/api')
 def api():
