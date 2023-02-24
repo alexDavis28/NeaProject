@@ -38,8 +38,6 @@ def recommend():
 def save_recipe():
     if "active_user_email" in session:
         if request.method == "POST":
-            print("e")
-            print(request.form["recipe_title"])
             user = find_user_by_email(session["active_user_email"])
             user_save_recipe(request.form["recipe_title"], user)
         return redirect("/profile")
