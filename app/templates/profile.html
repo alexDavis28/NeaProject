@@ -1,5 +1,36 @@
 {% extends "base.html" %}
 {% block title %}Profile{% endblock %}
 {% block content%}
-<p>Profile</p>
+<div id="page-title" class="title text"><legend><h2>Profile</h2></legend></div>
+<div id="create-profile-form-container" class="form">
+    <form method="POST" id="create-profile-form">
+        <fieldset>
+            {{form.hidden_tag()}}
+            <div id="first-name-field" class="form-field string-field">
+                {{form.first_name.label}}
+                <br>
+                {{form.first_name()}}
+            </div>
+            <div id="last-name-field" class="form-field string-field">
+                {{form.last_name.label}}
+                <br>
+                {{form.last_name()}}
+            </div>
+            <div id="email-field" class="form-field string-field">
+                {{form.email.label}}
+                <br>
+                {{form.email()}}
+            </div>
+            <div id="password-field" class="form-field password-field">
+                {{form.password.label}}
+                <br>
+                {{form.password()}}
+            </div>
+            <br>
+            <div id="form-submit-button" class=" form-field form-button">
+            {{form.submit()}}
+        </div>
+        </fieldset>
+    </form>
+</div>
 {% endblock%}

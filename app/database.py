@@ -1,8 +1,8 @@
 from flask import Flask
 from app import db
-from app.models import Query, Result, Ingredient
+from app.models import Query, Result, Ingredient, User
 import pandas as pd
-
+import MySQLdb
 
 def select_recipes_with_query(query: Query) -> list[Result]:
     """Find all recipes with at least one ingredient that matches a token in the query"""
@@ -53,3 +53,17 @@ def create_recipe_select_sql(query: Query) -> str:
                            f"SELECT ingredient_id FROM ingredients WHERE name REGEXP \"{ingredients_regex}\")) AND recipes.time <=" \
                            f"{query.max_time} GROUP BY recipes.recipe_id, recipes.title;"
     return find_recipes_sql
+
+
+def add_profile_to_database(profile: User) -> bool:
+    cursor = db.connection.cursor()
+    values = (profile.first_name, profile.last_name, profile.email, profile.password_hash)
+    sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (%s, %s, %s, %s)"
+    # cursor.execute(sql, values)
+    try:
+        cursor.execute(sql, values)
+    except MySQLdb.IntegrityError:
+        # Throws when trying to create a profile with an already used email
+        return False
+    db.connection.commit()
+    return True

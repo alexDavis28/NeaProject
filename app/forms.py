@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, SubmitField
+from wtforms import StringField, SelectField, IntegerField, SubmitField, EmailField, PasswordField
 from wtforms.validators import NumberRange, DataRequired, Optional
 
 
@@ -9,3 +9,12 @@ class RecommenderForm(FlaskForm):
     sort_mode = SelectField("Sort by", choices=[('relevancy', 'Relevancy'), ('title', 'Title'), ('total_time', 'Time to cook')])
     limit = IntegerField("Limit number of results", validators=[Optional(), NumberRange(min=1)])
     submit = SubmitField("Find Recipes")
+
+
+class CreateProfileForm(FlaskForm):
+    first_name = StringField("First name", validators=[DataRequired()])
+    last_name = StringField("Last name", validators=[DataRequired()])
+    email = EmailField("Email", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Create profile")
+    # Check if password fields equal
