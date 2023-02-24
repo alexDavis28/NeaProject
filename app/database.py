@@ -80,6 +80,20 @@ def find_user_by_email(email: str) -> Optional[User]:
         return None
     else:
         result = cursor.fetchone()
-        user = User(first_name=result[1], last_name=result[2], email=result[3], password_hash=result[4])
+        user = User(user_id=result[0], first_name=result[1], last_name=result[2], email=result[3],
+                    password_hash=result[4])
         return user
     pass
+
+
+def user_save_recipe(recipe_title: str, user: User):
+    # Get recipe id by title
+    cursor = db.connection.cursor()
+    recipe_select = f"SELECT recipe_id FROM recipes WHERE title='{recipe_title}';"
+    cursor.execute(recipe_select)
+    recipe_id = cursor.fetchone()[0]
+
+    insert_sql = f"INSERT INTO saved_recipe (user_id, recipe_id) VALUES (%s, %s);"
+    values = (user.user_id, recipe_id)
+    cursor.execute(insert_sql, values)
+    db.connection.commit()
