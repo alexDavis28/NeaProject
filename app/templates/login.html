@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content%}
+<div id="page-title" class="title text"><legend><h2>Login</h2></legend></div>
+<div id="login-form-container" class="form">
+    <form method="POST" id="login-form">
+        <fieldset>
+            {{form.hidden_tag()}}
+            <div id="email-field" class="form-field string-field">
+                {{form.email.label}}
+                <br>
+                {{form.email()}}
+            </div>
+            <div id="password-field" class="form-field password-field">
+                {{form.password.label}}
+                <br>
+                {{form.password()}}
+            </div>
+            <br>
+            <div id="form-submit-button" class=" form-field form-button">
+            {{form.submit()}}
+        </fieldset>
+    </form>
+    {% with alerts = get_flashed_messages(with_categories=true) %}
+        {% if alerts %}
+            <div id="alerts">
+                <ul>
+                    {% for type, content in alerts %}
+                        {% if type=="form" %}
+                            <li>
+                                {{ content }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+{% endblock%}
