@@ -1,8 +1,8 @@
 from app import app, recommender
-from app.forms import RecommenderForm, CreateProfileForm
+from app.forms import RecommenderForm, CreateProfileForm, LoginForm
 from flask import render_template, session, redirect, url_for, request, flash
 from app.models import Query, User
-from app.database import add_profile_to_database
+from app.database import add_profile_to_database, find_user_by_email
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -35,18 +35,43 @@ def info():
     return render_template("info.html")
 
 
-@app.route('/profile', methods=["GET", "POST"])
-def profile():
-    # Route for profile page
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    # Route for register page
     form = CreateProfileForm()
     if form.validate_on_submit():
         # Create profile
-        profile = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
-        profile_added_successfully = add_profile_to_database(profile)
+        user = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
+        profile_added_successfully = add_profile_to_database(user)
         if not profile_added_successfully:
             flash("Email already in use", "form")
-    return render_template("profile.html", form=form)
+        else:
+            redirect("login")
+    return render_template("register.html", form=form)
 
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        # Find profile with given email
+        email = form.email.data
+        password = form.password.data
+        stored_user = find_user_by_email(email)
+        login_user = User(first_name=stored_user.first_name, last_name=stored_user.last_name, email=email,
+                          plaintext_password=password)
+        login_user.password_hash = login_user.calculate_password_hash(password)
+        if login_user.password_hash == stored_user.password_hash:
+            session["active_user"] = email
+            return redirect("profile")
+        else:
+            flash("Invalid email or password", "form")
+    return render_template("login.html", form=form)
+
+
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
 
 @app.route('/api')
 def api():

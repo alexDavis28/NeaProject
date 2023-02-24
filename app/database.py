@@ -3,6 +3,8 @@ from app import db
 from app.models import Query, Result, Ingredient, User
 import pandas as pd
 import MySQLdb
+from typing import Optional
+
 
 def select_recipes_with_query(query: Query) -> list[Result]:
     """Find all recipes with at least one ingredient that matches a token in the query"""
@@ -58,7 +60,7 @@ def create_recipe_select_sql(query: Query) -> str:
 def add_profile_to_database(profile: User) -> bool:
     cursor = db.connection.cursor()
     values = (profile.first_name, profile.last_name, profile.email, profile.password_hash)
-    sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (%s, %s, %s, %s);"
     # cursor.execute(sql, values)
     try:
         cursor.execute(sql, values)
@@ -67,3 +69,17 @@ def add_profile_to_database(profile: User) -> bool:
         return False
     db.connection.commit()
     return True
+
+
+def find_user_by_email(email: str) -> Optional[User]:
+    cursor = db.connection.cursor()
+    sql = f'SELECT * FROM users WHERE email="{email}";'
+    cursor.execute(sql)
+    if cursor.rowcount == 0:
+        # no results found
+        return None
+    else:
+        result = cursor.fetchone()
+        user = User(first_name=result[1], last_name=result[2], email=result[3], password_hash=result[4])
+        return user
+    pass
