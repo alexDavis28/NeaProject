@@ -4,6 +4,7 @@ from flask import render_template, session, redirect, url_for, request, flash
 from app.models import Query, User
 from app.database import add_profile_to_database
 
+
 @app.route('/', methods=["GET", "POST"])
 def index():
     """Home page of the site, displaying the recommender form"""
@@ -42,9 +43,8 @@ def profile():
         # Create profile
         profile = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
         profile_added_successfully = add_profile_to_database(profile)
-        print(profile_added_successfully)
         if not profile_added_successfully:
-            flash("Email already in use")
+            flash("Email already in use", "form")
     return render_template("profile.html", form=form)
 
 

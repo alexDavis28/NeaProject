@@ -32,5 +32,20 @@
         </div>
         </fieldset>
     </form>
+    {% with alerts = get_flashed_messages(with_categories=true) %}
+        {% if alerts %}
+            <div id="alerts">
+                <ul>
+                    {% for type, content in alerts %}
+                        {% if type=="form" %}
+                            <li>
+                                {{ content }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
 </div>
 {% endblock%}
