@@ -25,6 +25,13 @@
             </ul>
         </div>
     </a>
+    <div class="recipe-save-button">
+        <form method="POST" action='{{url_for("save_recipe")}}'>
+            {{form.hidden_tag()}}
+            <input type="submit" value="Save recipe" name="save_button">
+            <input type="hidden" value="{{recipe.title}}" name="recipe_title">
+        </form>
+    </div>
 </div>
 {% endfor %}
 
