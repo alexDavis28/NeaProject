@@ -40,14 +40,17 @@ def register():
     # Route for register page
     form = CreateProfileForm()
     if form.validate_on_submit():
+        if form.password.data != form.repeat_password.data:
+            flash("Passwords do not match", "form")
         # Create profile
-        user = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
-        user.password_hash = user.calculate_password_hash()
-        profile_added_successfully = add_profile_to_database(user)
-        if not profile_added_successfully:
-            flash("Email already in use", "form")
         else:
-            return redirect("/login")
+            user = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
+            user.password_hash = user.calculate_password_hash()
+            profile_added_successfully = add_profile_to_database(user)
+            if not profile_added_successfully:
+                flash("Email already in use", "form")
+            else:
+                return redirect("/login")
     return render_template("register.html", form=form)
 
 
