@@ -11,6 +11,51 @@
         </button>
     </a>
 </div>
+<br>
+<div id="profile-options">
+    <div id="change-email-form-container" class="form">
+        <form method="POST" id="change-email-form">
+            <fieldset>
+                <h3>Change email</h3>
+                {{ change_email_form.hidden_tag() }}
+                <div id="current-email-field" class="form-field email-field">
+                    {{change_email_form.current_email.label}}
+                    <br>
+                    {{change_email_form.current_email()}}
+                </div>
+                <div id="new-email-field" class="form-field email-field">
+                    {{change_email_form.new_email.label}}
+                    <br>
+                    {{change_email_form.new_email()}}
+                </div>
+                <div id="change-email-password-field" class="form-field password-field">
+                    {{change_email_form.password.label}}
+                    <br>
+                    {{change_email_form.password()}}
+                </div>
+                <br>
+                <div id="change-email-submit-button" class="form-field form-button">
+                    {{change_email_form.submit()}}
+                </div>
+            </fieldset>
+        </form>
+        {% with alerts = get_flashed_messages(with_categories=true) %}
+        {% if alerts %}
+            <div id="alerts">
+                <ul>
+                    {% for type, content in alerts %}
+                        {% if type=="form" or type=="info"%}
+                            <li>
+                                {{ content }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
+    </div>
+</div>
 <div id="saved-recipes">
     <h3>Saved recipes</h3>
     {% for recipe in recipes %}

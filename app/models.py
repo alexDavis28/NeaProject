@@ -74,9 +74,8 @@ class User:
         self.password_hash = password_hash
         self.user_id = user_id
 
-    def calculate_password_hash(self, password: str = None) -> str:
-        if not password:
-            password = self.plaintext_password
+    @staticmethod
+    def calculate_password_hash(password: str = None) -> str:
         total = 0
         for i, character in enumerate(password):
             total += ord(character) ** (i + 1)

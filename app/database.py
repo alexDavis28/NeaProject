@@ -109,3 +109,13 @@ def find_user_saved_recipes(user: User) -> list[Recipe]:
     for result in results:
         recipes.append(Recipe(title=result[1], ingredients=[], total_time=result[2], url=result[3], website=result[4]))
     return recipes
+
+
+def change_user_email(user: User, new_email: str) -> bool:
+    if find_user_by_email(new_email) is not None:
+        return False
+    cursor = db.connection.cursor()
+    sql = f"UPDATE users SET email='{new_email}' WHERE user_id={user.user_id};"
+    cursor.execute(sql)
+    db.connection.commit()
+    return True
