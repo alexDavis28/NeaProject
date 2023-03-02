@@ -119,3 +119,10 @@ def change_user_email(user: User, new_email: str) -> bool:
     cursor.execute(sql)
     db.connection.commit()
     return True
+
+
+def change_user_password(user: User, new_password_hash: str):
+    cursor = db.connection.cursor()
+    sql = f"UPDATE users SET password='{new_password_hash}' WHERE user_id={user.user_id};"
+    cursor.execute(sql)
+    db.connection.commit()

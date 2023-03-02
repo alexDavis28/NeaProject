@@ -1,9 +1,9 @@
 from app import app, recommender
-from app.forms import RecommenderForm, CreateProfileForm, LoginForm, SaveRecipeForm, ChangeEmailForm
+from app.forms import RecommenderForm, CreateProfileForm, LoginForm, SaveRecipeForm, ChangeEmailForm, ChangePasswordForm
 from flask import render_template, session, redirect, url_for, request, flash
 from app.models import Query, User
 from app.database import add_profile_to_database, find_user_by_email, user_save_recipe, find_user_saved_recipes,\
-    change_user_email
+    change_user_email, change_user_password
 
 
 @app.route('/', methods=["GET", "POST"])
@@ -99,14 +99,15 @@ def logout():
     # Logout user
     if "active_user_email" in session:
         del session["active_user_email"]
-    return redirect("/")
+    return redirect("/profile")
 
 
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
     change_email_form = ChangeEmailForm()
-    if change_email_form.validate_on_submit():
-        user = find_user_by_email(session["active_user_email"])
+    change_password_form = ChangePasswordForm()
+    if change_email_form.validate_on_submit() and change_email_form.data:
+        user = find_user_by_email(change_email_form.current_email.data)
         form_password_hash = User.calculate_password_hash(change_email_form.password.data)
         if not user:
             # invalid email
@@ -120,12 +121,24 @@ def profile():
                     flash("Email already in use", "change-email-form")
             else:
                 flash("Incorrect password", "change-email-form")
-
+    elif change_password_form.validate_on_submit() and change_password_form.data:
+        user = find_user_by_email(change_password_form.email.data)
+        current_password_hash = User.calculate_password_hash(change_password_form.current_password.data)
+        new_password_hash = User.calculate_password_hash(change_password_form.new_password.data)
+        if not user:
+            flash("Invalid email", "change-password-form")
+        else:
+            if current_password_hash == user.password_hash:
+                change_user_password(user, new_password_hash)
+                return redirect("/logout")
+            else:
+                flash("Incorrect password", "change-password-form")
     if "active_user_email" in session:
         # find currently logged in account
         user = find_user_by_email(session["active_user_email"])
         saved_recipes = find_user_saved_recipes(user)
-        return render_template("profile.html", user=user, recipes=saved_recipes, change_email_form=change_email_form)
+        return render_template("profile.html", user=user, recipes=saved_recipes, change_email_form=change_email_form,
+                               change_password_form=change_password_form)
     else:
         return redirect("login")
 
