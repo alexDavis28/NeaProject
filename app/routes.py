@@ -110,16 +110,16 @@ def profile():
         form_password_hash = User.calculate_password_hash(change_email_form.password.data)
         if not user:
             # invalid email
-            flash("Invalid email", "form")
+            flash("Invalid email", "change-email-form")
         else:
             if form_password_hash == user.password_hash:
                 has_changed_email = change_user_email(user, new_email=change_email_form.new_email.data)
                 if has_changed_email:
                     return redirect("/logout")
                 elif not has_changed_email:
-                    flash("Email already in use", "form")
+                    flash("Email already in use", "change-email-form")
             else:
-                flash("Incorrect password", "form")
+                flash("Incorrect password", "change-email-form")
 
     if "active_user_email" in session:
         # find currently logged in account
