@@ -45,13 +45,13 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     number_of_recipes = len(recipe_matrix.index)
     inverse_document_frequency = {}
     for i in recipes_term_frequency_matrix:
+        # for every term column
         # Find the document frequency of the term i
         # df = the length of the series of the term column where the cell > 0
         document_frequency_i = len(recipes_term_frequency_matrix[recipes_term_frequency_matrix[i] > 0])
         # Calculate the idf for i
         inverse_document_frequency_i = math.log(number_of_recipes / document_frequency_i, 2)
         inverse_document_frequency[i] = inverse_document_frequency_i
-
     # Calculate the tf-idf matrix by multiplying each row of the term frequency matrix by the idf values
     # This produces the dataframe of recipe vectors
     recipe_tf_idf_matrix = recipes_term_frequency_matrix.mul(inverse_document_frequency)
@@ -81,7 +81,7 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     vector_angles = dot_products.divide(equation_denominator)
 
     # Calculate the angle between the vectors and bound it within positive space (0.5 to 1)
-    vector_similarities = vector_angles.apply(lambda x: 1 - (math.acos(x) / math.pi))
+    vector_similarities = vector_angles.apply(lambda x: 1 - (math.acos(x) / math.pi)*2)
     vector_similarities.fillna(0, inplace=True)
 
     recipes = []
