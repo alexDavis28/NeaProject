@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 import config
 from flask_wtf.csrf import CSRFProtect
 from flask_mysqldb import MySQL
@@ -11,4 +11,5 @@ app.config["MYSQL_DB"] = config.DATABASE_NAME
 app.config["MYSQL_HOST"] = config.DATABASE_HOST
 app.config["MYSQL_PASSWORD"] = config.DATABASE_PASSWORD
 app.config["MYSQL_USER"] = config.DATABASE_USERNAME
+session.permanent = True
 from app import routes
