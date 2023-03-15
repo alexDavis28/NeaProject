@@ -1,5 +1,100 @@
 {% extends "base.html" %}
 {% block title %}API{% endblock %}
 {% block content%}
-<p>API</p>
+<h1>API</h1>
+<p>This website provides an API alternative to make searches for recipes.</p>
+<p>It uses the same functions as the search done through the web page but takes inputs as URL parameters and returns JSON data.</p>
+<h2><b>/api/search</b></h2>
+<table id="api-table">
+    <tr class="table-header-row">
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td>ingredients</td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>A space-separated list of ingredients</td>
+    </tr>
+    <tr>
+        <td>max_time</td>
+        <td>Int</td>
+        <td>No</td>
+        <td>The maximum total preparation time that returned recipes can have</td>
+    </tr>
+    <tr>
+        <td>sort_mode</td>
+        <td>String</td>
+        <td>No</td>
+        <td>How to sort the returned recipes</td>
+    </tr>
+    <tr>
+        <td>limit</td>
+        <td>Int</td>
+        <td>No</td>
+        <td>The number of results to return after they have been sorted</td>
+    </tr>
+</table>
+<br>
+<table id="sort-modes-table">
+    <tr class="table-header-row">
+        <th>Sort mode</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            Relevancy
+        </td>
+        <td>
+            Sorts the recipes by how relevant they are to the query
+        </td>
+    </tr>
+    <tr>
+        <td>
+            title
+        </td>
+        <td>
+            Sorts the recipes alphabetically by title
+        </td>
+    </tr>
+    <tr>
+        <td>
+            total_time
+        </td>
+        <td>
+            Sorts the recipes by the time they take to make
+        </td>
+    </tr>
+</table>
+<br>
+<h2>Example returned JSON</h2>
+This shows one returned recipe, although more would likely be in the "results" list.
+<pre>
+<code id="json-code-block">
+{
+    "results": [
+        {
+            "ingredients":[
+                {
+                   "name":"leek"
+                },
+                {
+                   "name":"salt ground black pepper"
+                },
+                {
+                   "name":"unsalted butter"
+                }
+            ],
+            "relevancy":0.0761111692806109,
+            "title":"Easy Sauteed Leeks",
+            "total_time":26,
+            "url":"https://www.allrecipes.com/recipe/8472762/easy-sauteed-leeks/",
+            "website":"allrecipes"
+        }
+    ]
+}
+</code>
+</pre>
 {% endblock%}
