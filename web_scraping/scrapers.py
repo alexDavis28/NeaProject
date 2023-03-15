@@ -68,9 +68,78 @@ class AllRecipes(WebScraper):
             except Exception as e:
                 # Handle invalid links
                 print(e)
-                print(f"Invalid link: {link, recipe_link}")
+                print(f"Invalid link: {link}")
 
         unique_links = set(links_to_scrape)
         with open(links_file_path, "w+") as file:
             file.write("\n".join(unique_links))
             print("File Written")
+
+
+class SimplyRecipes(WebScraper):
+    def scrape_page(self, url: str) -> Recipe:
+        soup = self.make_soup(url)
+
+        # find title
+        title = soup.find("h1", class_="heading__title").text
+        # find ingredients
+        raw_ingredients = [i.text.strip() for i in soup.findAll("li", class_="ingredient")]
+        identified_ingredients = [identify_ingredient(i) for i in raw_ingredients]
+        ingredients = [i for i in identified_ingredients if i]  # Remove None values returned by identify_ingredient
+
+        # find total time
+        time_text = soup.find("span", id="meta-text_1-0").text
+        total_time_regex = r"(?<=Total Time\n)( *\d+ (hr(s)?|min(s)?) *)+"
+        hours_regex = r"\d+(?= hr(s)?)"
+        minutes_regex = r"\d+(?= min(s)?)"
+        prep_time_results = re.search(total_time_regex, time_text)
+        prep_time = prep_time_results[0] if prep_time_results else None
+        if prep_time:
+            prep_minutes_results = re.search(minutes_regex, prep_time)
+            prep_minutes = int(prep_minutes_results[0]) if prep_minutes_results else 0
+
+            prep_hours_results = re.search(hours_regex, prep_time)
+            prep_hours_in_minutes = int(re.search(hours_regex, prep_time)[0]) * 60 if prep_hours_results else 0
+
+            total_time = prep_minutes + prep_hours_in_minutes
+        else:
+            # Default value if no total time is defined in the recipe, so will always be included regardless of max time
+            total_time = -1
+
+
+        # create recipe object
+        recipe = Recipe(title, ingredients, total_time, url, "Simply Recipes")
+        return recipe
+
+    def find_recipe_links(self, url: str) -> list[str]:
+        soup = self.make_soup(url)
+        links = [element.get("href") for element in soup.findAll("a", class_="mntl-card-list-items")]
+        return links
+
+    def find_links_to_scrape(self, recipe_site: str):
+        links_file_path = f"{recipe_site}_data\\{recipe_site}links.txt"
+
+        # Searching for recipes on the pages linked on the navbar
+        pages_to_search = [["https://www.simplyrecipes.com/", "global-nav_1-0"]]
+
+        links = []
+        for page, element_id in pages_to_search:
+            soup = self.make_soup(page)
+            links += [link.get("href") for link in soup.find(id=element_id).findAll("a")]
+
+        links_to_scrape = []
+        for link in links:
+            try:
+                recipe_links = self.find_recipe_links(link)
+                for recipe_link in recipe_links:
+                    links_to_scrape.append(recipe_link)
+            except Exception as e:
+                # Handle invalid links
+                print(e)
+                print(f"Invalid link: {link}")
+
+        unique_links = set(links_to_scrape)
+        with open(links_file_path, "w+") as file:
+            file.write("\n".join(unique_links))
+            print("File Written")
+        return unique_links

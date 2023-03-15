@@ -61,7 +61,6 @@ def add_profile_to_database(profile: User) -> bool:
     cursor = db.connection.cursor()
     values = (profile.first_name, profile.last_name, profile.email, profile.password_hash)
     sql = "INSERT INTO users (first_name, last_name, email, password) VALUES (%s, %s, %s, %s);"
-    # cursor.execute(sql, values)
     try:
         cursor.execute(sql, values)
     except MySQLdb.IntegrityError:

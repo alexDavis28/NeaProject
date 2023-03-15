@@ -76,6 +76,9 @@ def combine_json(recipe_site: str, ingredients_or_recipes: str):
 # batch_scrape_pages("allrecipes", all_recipes_scraper, 15000, 16000)
 # batch_scrape_pages("allrecipes", all_recipes_scraper, 16000, 16639)
 
+simply_recipes_scraper = scrapers.SimplyRecipes()
+simply_recipes_scraper.find_links_to_scrape("Simply Recipes")
+batch_scrape_pages("Simply Recipes", simply_recipes_scraper, 0, 1153)
 
 '''
 AllRecipes

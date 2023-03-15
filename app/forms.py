@@ -20,7 +20,7 @@ class CreateProfileForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired()])
     repeat_password = PasswordField("Repeat Password", validators=[DataRequired()])
     submit = SubmitField("Create profile")
-    # Check if password fields equal
+
 
 
 class LoginForm(FlaskForm):
