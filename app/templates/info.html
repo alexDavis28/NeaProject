@@ -1,5 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Info{% endblock %}
 {% block content%}
-<p>Info</p>
+<h1>Info</h1>
+<p>
+    To use this search, simpy enter a list of space-separated ingredients in the "ingredients" field of the form.
+    Do not include any other kind of seperator in the field, only spaces.
+</p>
+<h2>Searching</h2>
+<p>
+    You can optionally include a maximum time that recipes can take to prepare, this must be an integer greater than 0.
+</p>
+<p>
+    You can also determine what the results will be sorted by, and limit the number of returned recipes.
+</p>
+<h2>Results</h2>
+<p>
+    After you have made a search you will be shown the results. Ingredients that match your search will be in bold.
+    Clicking on any of the recipes will take you to the webpage for it.
+</p>
+<h2>Accounts</h2>
+<p>
+    You can also <a href='{{url_for("register")}}'>create an account here.</a>
+    This account will enable you to save recipes.
+</p>
+<h2>Saving recipes</h2>
+One you have crated an account simply click the "save recipe" button on any recipe after making a search to save it to your account.
 {% endblock%}
