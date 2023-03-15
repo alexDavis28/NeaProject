@@ -17,7 +17,7 @@ def select_recipes_with_query(query: Query) -> list[Result]:
     recipes = []
     for result in results:
         ingredients = []
-        for ingredient in result[5].split(","):  # Check this against the character in the sql maybe?
+        for ingredient in result[5].split(","):
             ingredients.append(Ingredient(ingredient))
         recipes.append(Result(result[1], ingredients, result[2], result[3], result[4]))
     return recipes
@@ -82,7 +82,6 @@ def find_user_by_email(email: str) -> Optional[User]:
         user = User(user_id=result[0], first_name=result[1], last_name=result[2], email=result[3],
                     password_hash=result[4])
         return user
-    pass
 
 
 def user_save_recipe(recipe_title: str, user: User):

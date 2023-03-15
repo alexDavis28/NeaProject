@@ -2,7 +2,7 @@ from app import app, recommender
 from app.forms import RecommenderForm, CreateProfileForm, LoginForm, SaveRecipeForm, ChangeEmailForm, ChangePasswordForm
 from flask import render_template, session, redirect, url_for, request, flash
 from app.models import Query, User
-from app.database import add_profile_to_database, find_user_by_email, user_save_recipe, find_user_saved_recipes,\
+from app.database import add_profile_to_database, find_user_by_email, user_save_recipe, find_user_saved_recipes, \
     change_user_email, change_user_password
 
 
@@ -99,7 +99,7 @@ def logout():
     # Logout user
     if "active_user_email" in session:
         del session["active_user_email"]
-    return redirect("/profile")
+    return redirect("/login")
 
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -169,7 +169,11 @@ def api_search():
     if "limit" in request.args:
         query.limit = int(request.args["limit"])
 
-    query.results = recommender.find_results(query)
+    try:
+        query.results = recommender.find_results(query)
+    except ValueError:
+        #     Not a recognised sort mode
+        return "400: Not a valid sort mode", 400
     if query.limit:
         query.results = query.results[:query.limit]
     data = {"results": [r.as_dict() for r in query.results]}

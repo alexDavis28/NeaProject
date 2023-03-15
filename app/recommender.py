@@ -11,7 +11,7 @@ pd.set_option("display.max_rows", None)
 
 def magnitude(vector: list[float]) -> float:
     """Calculate the magnitude of a vector, ie: [x, y] -> sqrt(x^2 + y^2)"""
-    # List comps are faster than for loops, necessary given how awfully slow this runs
+    # List comprehensions are faster than for loops, necessary given how slow this runs
     return math.sqrt(sum([math.pow(i, 2) for i in vector]))
 
 
@@ -24,7 +24,7 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     # Copy the dataframe and turn the "ingredients" column into a list of tokens
     recipe_matrix_split_ingredients = recipe_matrix.copy()
     recipe_matrix_split_ingredients["ingredients"] = recipe_matrix_split_ingredients["ingredients"].apply(
-        lambda x: " ".join(x.split(","))).apply(nltk.word_tokenize)
+        lambda x: x.replace(",", " ")).apply(nltk.word_tokenize)
 
     # Create a list of all unique ingredients
     all_ingredients = []
@@ -67,21 +67,20 @@ def score_recipes_by_relevancy_from_query(query: Query) -> list[Result]:
     query_tf_idf = query_term_frequency.mul(inverse_document_frequency)
     query_tf_idf_series = query_tf_idf.iloc[0]  # The query tf-idf needs to be stored as a series for the dot product
 
-    # print("magnitudes")
     # Calculate the magnitude of each recipe vector
     recipe_magnitudes = recipe_tf_idf_matrix.apply(lambda x: magnitude(x), axis=1)
     # Calculate the magnitude of the query vector
     query_magnitude = magnitude(query_tf_idf_series)
     # Multiply the magnitudes of each recipe vector by the query vector to produce the denominator of the angle equation
-    equation_denominator = recipe_magnitudes * query_magnitude  # need a better name for this
+    equation_denominator = recipe_magnitudes * query_magnitude
 
     # Calculate the dot products of each recipe vector and the query vector
     dot_products = recipes_term_frequency_matrix.dot(query_tf_idf_series)
     # Divide the dot products by the product of the magnitudes to find the cosine of the angle between the vectors
     vector_angles = dot_products.divide(equation_denominator)
 
-    # Calculate the angle between the vectors and bound it within positive space (0.5 to 1)
-    vector_similarities = vector_angles.apply(lambda x: 1 - (math.acos(x) / math.pi)*2)
+    # Calculate the angle between the vectors and bound it within positive space (0 to 1)
+    vector_similarities = vector_angles.apply(lambda x: 1 - (math.acos(x) / (0.5*math.pi)))
     vector_similarities.fillna(0, inplace=True)
 
     recipes = []

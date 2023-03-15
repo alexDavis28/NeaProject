@@ -32,6 +32,7 @@ class Recipe:
 
     @property
     def formatted_time(self) -> str:
+        """Returns the recipe's total time formatted in hours and minutes"""
         if self.total_time == -1:
             return "N/A"
         else:
@@ -65,12 +66,11 @@ class Result(Recipe):
 
 class User:
     def __init__(self, first_name: str, last_name: str, email: str, plaintext_password: str = None,
-                 password_hash: str = None, saved_recipes: list[Recipe] = None, user_id: int = None):
+                 password_hash: str = None, user_id: int = None):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.plaintext_password = plaintext_password
-        self.saved_recipes = saved_recipes
         self.password_hash = password_hash
         self.user_id = user_id
 
